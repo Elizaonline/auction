@@ -88,7 +88,7 @@ export const createSocketServer = (httpServer) => {
             if (Object.keys(auctions).length > 0) {
                 const auctionId = Object.keys(auctions)[0]
                 if (!auctions[auctionId].participants.find(i => i.nameCompany === socket.nameCompany)) {
-                    if(auctions[auctionId].participants.length === 0) {
+                    if (auctions[auctionId].participants.length === 0) {
                         addParticipant(auctions[auctionId].participants, socket, true)
                     } else {
                         addParticipant(auctions[auctionId].participants, socket)
@@ -98,7 +98,7 @@ export const createSocketServer = (httpServer) => {
                 socket.join(socket.id);
 
             }
-            
+
         }
         participants.forEach(i => io.to(i.socket).emit("participants updated", { participants }));
         if (organizer) { io.to(organizer.id).emit("participants updated", { participants }) }
@@ -165,9 +165,10 @@ export const createSocketServer = (httpServer) => {
                     }
                     auction.participants = auction.participants.filter(participant => participant.socket !== socket.id);
                 }
-                participants.forEach(i => io.to(i.socket).emit("participants updated", { participants }));
-                io.to(organizer.id).emit("participants updated", { participants })
+
             }
+            participants.forEach(i => io.to(i.socket).emit("participants updated", { participants }));
+            io.to(organizer.id).emit("participants updated", { participants })
         });
     });
 
@@ -209,7 +210,7 @@ export const createSocketServer = (httpServer) => {
     const handleTurnTimeout = (auction, currentBidder, auctionId) => {
         const currentBidderIndex = auction.participants.findIndex(i => i.socket === currentBidder.socket);
         const nextBidderIndex = (currentBidderIndex + 1) % auction.participants.length;
-        
+
         try {
             const nextBidder = auction.participants[nextBidderIndex];
 
@@ -257,7 +258,7 @@ export const createSocketServer = (httpServer) => {
         }
     }
 
-    const addParticipant = (list, socket, active=false) => {
+    const addParticipant = (list, socket, active = false) => {
         list.push(({
             availability: "-",
             term: 80,
