@@ -143,6 +143,9 @@ export const createSocketServer = (httpServer) => {
             if (!currentBidder) return;
 
             currentBidder.currentBid = parseInt(bidAmount);
+            
+            auction.participants.forEach(i => io.to(i.socket).emit("participants updated", { participants }));
+            if (organizer) { io.to(organizer.id).emit("participants updated", { participants })}
         });
 
         socket.on("disconnect", () => {
